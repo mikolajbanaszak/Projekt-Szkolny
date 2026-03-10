@@ -1,6 +1,6 @@
 if __name__ == '__main__':
     json = ""
-    plik = "logowane.json"
+    plik = "../Data/logowane.json"
     with open(plik, "r") as f:
 
         for line in f.readlines():

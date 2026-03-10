@@ -66,8 +66,8 @@ if __name__ == "__main__":
     y = json.dumps([u.to_dict() for u in Tablica_uzytkownikow])
     b = json.dumps([u.to_dict() for u in Tablica_logowan])
 
-    with open("uzytkownicy.json", "w") as f:
+    with open("../Data/uzytkownicy.json", "w") as f:
         f.write(y)
-    with open("logowane.json", "w") as f:
+    with open("../Data/logowane.json", "w") as f:
         f.write(b)
     print(b)
