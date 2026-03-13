@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+
+// react bootstrap
+import { Button, Stack } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row, Col, Table } from "react-bootstrap";
+
+// dane
+import users from "../../../Data/uzytkownicy.json";
+import logs from "../../../Data/logowane.json";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Container
+        style={{ maxWidth: "100%" } /*Domyślnie bootstrap ustawia na 50% */}
+      >
+        <Row>
+          <Col sm={4}>
+            <Table striped>
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>imię</th>
+                  <th>nazwisko</th>
+                  <th>miejsce zamieszkania</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((u) => {
+                  console.log(u.name);
+                  return (
+                    <tr key={u.id}>
+                      <td>{u.id}</td>
+                      <td>{u.name}</td>
+                      <td>{u.last_name}</td>
+                      <td>{u.miejsce_zamieszkania}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Col>
+          <Col sm={8}>
+            {/* miejsce na wykresy itp. */}
+            <img
+              src="https://cdn.hinative.com/attached_images/646616/56ac8602dfaf7f9161106d97aba57a86d18e1e21/large.jpg?1598107797"
+              alt="r"
+            />
+          </Col>
+        </Row>
+      </Container>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
