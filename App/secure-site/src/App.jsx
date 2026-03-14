@@ -4,6 +4,16 @@ import { useState } from "react";
 import { Button, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col, Table } from "react-bootstrap";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 // dane
 import users from "../../../Data/uzytkownicy.json";
@@ -11,6 +21,36 @@ import logs from "../../../Data/logowane.json";
 
 function App() {
   const [count, setCount] = useState(0);
+  const GetData = () => {
+    const dane = logs.map((d) => ({
+      id: d.id,
+      data: new Date(d.data).getDate(),
+    }));
+
+    // const suspicious = logs.map((d) => {
+    //   //const hour = new Date(d.data).getHours();
+    //   return d.lokalizacja == "Teheran"
+    //     ? { data: new Date(d.data).getDate() }
+    //     : null;
+    // });
+    const suspicious = logs
+      .filter((d) => d.lokalizacja == "Teheran")
+      .map((d) => ({ id: d.id, data: new Date(d.data).getDate() }));
+
+    const counts = suspicious.reduce((acc, item) => {
+      acc[item.data] = (acc[item.data] || 0) + 1;
+      return acc;
+    }, {});
+
+    const result = Object.entries(counts).map(([data, count]) => ({
+      data: Number(data),
+      count,
+    }));
+
+    //return JSON.stringify(result);
+    console.log(dane);
+    return result;
+  };
 
   return (
     <>
@@ -18,7 +58,7 @@ function App() {
         style={{ maxWidth: "100%" } /*Domyślnie bootstrap ustawia na 50% */}
       >
         <Row>
-          <Col sm={4}>
+          <Col sm={6}>
             <Table striped>
               <thead>
                 <tr>
@@ -43,12 +83,29 @@ function App() {
               </tbody>
             </Table>
           </Col>
-          <Col sm={8}>
-            {/* miejsce na wykresy itp. */}
-            <img
-              src="https://cdn.hinative.com/attached_images/646616/56ac8602dfaf7f9161106d97aba57a86d18e1e21/large.jpg?1598107797"
-              alt="r"
-            />
+          <Col>
+            <ResponsiveContainer
+              aspect={1.618}
+              style={{ maxWidth: 1200, margin: "auto" }}
+            >
+              <LineChart data={GetData()}>
+                <CartesianGrid
+                  fill="#EAEFEF"
+                  stroke="#BFC9D1"
+                  strokeDasharray="5 5"
+                />
+                <XAxis dataKey="data" stroke="#25343F" />
+                <YAxis stroke={"#25343F"} />
+                <Line
+                  type="monotone"
+                  dataKey="count"
+                  stroke={"#FF9B51"}
+                  dot={{ fill: "#FF9B51" }}
+                  activeDot={{ stroke: "#ff6f00" }}
+                />
+              </LineChart>
+              <Legend />
+            </ResponsiveContainer>
           </Col>
         </Row>
       </Container>

@@ -1,0 +1,31 @@
+<Container
+        style={{ maxWidth: "100%" } /*Domyślnie bootstrap ustawia na 50% */}
+      >
+        <Row>
+          <Col sm={4}>
+            <Table striped>
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>imię</th>
+                  <th>nazwisko</th>
+                  <th>miejsce zamieszkania</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((u) => {
+                  console.log(u.name);
+                  return (
+                    <tr key={u.id}>
+                      <td>{u.id}</td>
+                      <td>{u.name}</td>
+                      <td>{u.last_name}</td>
+                      <td>{u.miejsce_zamieszkania}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      </Container>
