@@ -15,12 +15,16 @@ import {
   Legend,
 } from "recharts";
 
+import { Navbar, NavbarBrand } from "react-bootstrap";
+import "./myCss.css";
+
 // dane
 import users from "../../../Data/uzytkownicy.json";
 import logs from "../../../Data/logowane.json";
 
 function App() {
   const [count, setCount] = useState(0);
+
   const GetData = () => {
     const dane = logs.map((d) => ({
       id: d.id,
@@ -33,9 +37,29 @@ function App() {
     //     ? { data: new Date(d.data).getDate() }
     //     : null;
     // });
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
     const suspicious = logs
       .filter((d) => d.lokalizacja == "Teheran")
-      .map((d) => ({ id: d.id, data: new Date(d.data).getDate() }));
+      .map((d) => {
+        return {
+          id: d.id,
+          data: `${new Date(d.data).getDate()} ${monthNames[new Date(d.data).getMonth()]}`,
+        };
+      });
 
     const counts = suspicious.reduce((acc, item) => {
       acc[item.data] = (acc[item.data] || 0) + 1;
@@ -43,7 +67,7 @@ function App() {
     }, {});
 
     const result = Object.entries(counts).map(([data, count]) => ({
-      data: Number(data),
+      data: data,
       count,
     }));
 
@@ -54,6 +78,10 @@ function App() {
 
   return (
     <>
+      <h1 style={{ textAlign: "center", margin: 20, marginBottom: 100 }}>
+        Admin Panel
+      </h1>
+
       <Container
         style={{ maxWidth: "100%" } /*Domyślnie bootstrap ustawia na 50% */}
       >
@@ -61,7 +89,7 @@ function App() {
           <Col sm={6}>
             <Table striped>
               <thead>
-                <tr>
+                <tr className="table-dark">
                   <th>id</th>
                   <th>imię</th>
                   <th>nazwisko</th>
@@ -72,7 +100,10 @@ function App() {
                 {users.map((u) => {
                   console.log(u.name);
                   return (
-                    <tr key={u.id}>
+                    <tr
+                      key={u.id}
+                      className={u.id == 1 ? "table-danger" : "table-success"}
+                    >
                       <td>{u.id}</td>
                       <td>{u.name}</td>
                       <td>{u.last_name}</td>
@@ -94,8 +125,19 @@ function App() {
                   stroke="#BFC9D1"
                   strokeDasharray="5 5"
                 />
-                <XAxis dataKey="data" stroke="#25343F" />
-                <YAxis stroke={"#25343F"} />
+                <XAxis dataKey="data" stroke="#F5F2F2" />
+                <YAxis stroke={"#F5F2F2"} />
+
+                <Tooltip
+                  cursor={{
+                    stroke: "#00ffff",
+                  }}
+                  contentStyle={{
+                    backgroundColor: "#37529c",
+                    borderColor: "#37529c",
+                  }}
+                />
+                <Legend />
                 <Line
                   type="monotone"
                   dataKey="count"
@@ -104,6 +146,7 @@ function App() {
                   activeDot={{ stroke: "#ff6f00" }}
                 />
               </LineChart>
+              <Legend />
               <Legend />
             </ResponsiveContainer>
           </Col>
