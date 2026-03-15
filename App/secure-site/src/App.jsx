@@ -55,6 +55,7 @@ function App() {
 
     const suspicious = logs
       .filter((d) => d.lokalizacja == "Teheran")
+      .sort((a, b) => new Date(a.data) - new Date(b.data)) //sortowanie dat(bo json leci po id)
       .map((d) => {
         return {
           id: d.id,
@@ -67,10 +68,12 @@ function App() {
       return acc;
     }, {});
 
-    const result = Object.entries(counts).map(([data, count]) => ({
-      data: data,
-      count,
-    }));
+    const result = Object.entries(counts).map(
+      ([data, num_of_suspicious_logs]) => ({
+        data: data,
+        num_of_suspicious_logs,
+      }),
+    );
 
     //return JSON.stringify(result);
     console.log(dane);
@@ -95,6 +98,7 @@ function App() {
                   <th>imię</th>
                   <th>nazwisko</th>
                   <th>miejsce zamieszkania</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -110,8 +114,11 @@ function App() {
                       <td>{u.last_name}</td>
                       <td>{u.miejsce_zamieszkania}</td>
                       <td>
-                        <Link to={"user-login-hours/" + u.id}>
-                          User Login Hours
+                        <Link
+                          to={"user-login-hours/" + u.id}
+                          style={{ textDecoration: "none", color: "black" }}
+                        >
+                          View Activity
                         </Link>
                       </td>
                     </tr>
@@ -146,7 +153,7 @@ function App() {
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="count"
+                  dataKey="num_of_suspicious_logs"
                   stroke={"#FF9B51"}
                   dot={{ fill: "#FF9B51" }}
                   activeDot={{ stroke: "#ff6f00" }}

@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import logs from "../../../Data/logowane.json";
+import users from "../../../Data/uzytkownicy.json";
 
 import {
   CartesianGrid,
@@ -11,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 const GetData = (userId) => {
   const result = logs
@@ -36,44 +38,69 @@ const GetData = (userId) => {
 
   return user_login_hours;
 };
+
+const GetUserName = (userId) => {
+  const userName = users
+    .filter((u) => u.id == userId)
+    .map((u) => `${u.name} ${u.last_name}`);
+  return userName;
+};
+
 function UserLoginHours() {
   const { userId } = useParams();
   return (
     <>
-      <ResponsiveContainer
-        aspect={1.618}
-        style={{ maxWidth: 1000, margin: "auto" }}
-      >
-        <LineChart data={GetData(userId)}>
-          <CartesianGrid
-            fill="#EAEFEF"
-            stroke="#BFC9D1"
-            strokeDasharray="5 5"
-          />
-          <XAxis dataKey="hour" stroke="#F5F2F2" />
-          <YAxis stroke={"#F5F2F2"} />
+      <Container>
+        <Row>
+          <Col sm={3}>
+            <h1>{GetUserName(userId)}</h1>
+            <h3>Liczba wszystkich logowań w danych godzinach</h3>
+          </Col>
+          <Col sm={9}>
+            <ResponsiveContainer
+              aspect={1.618}
+              style={{ maxWidth: 1000, margin: "auto" }}
+            >
+              <LineChart data={GetData(userId)}>
+                <CartesianGrid
+                  fill="#EAEFEF"
+                  stroke="#BFC9D1"
+                  strokeDasharray="5 5"
+                />
+                <XAxis dataKey="hour" stroke="#F5F2F2" />
+                <YAxis stroke={"#F5F2F2"} />
 
-          <Tooltip
-            cursor={{
-              stroke: "#00ffff",
-            }}
-            contentStyle={{
-              backgroundColor: "#37529c",
-              borderColor: "#37529c",
-            }}
-          />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="num_of_logs"
-            stroke={"#FF9B51"}
-            dot={{ fill: "#FF9B51" }}
-            activeDot={{ stroke: "#ff6f00" }}
-          />
-        </LineChart>
-        <Legend />
-        <Legend />
-      </ResponsiveContainer>
+                <Tooltip
+                  cursor={{
+                    stroke: "dodgerblue",
+                  }}
+                  contentStyle={{
+                    backgroundColor: "#696969",
+                    borderColor: "#696969",
+                  }}
+                />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="num_of_logs"
+                  stroke={"#b30000"}
+                  dot={{ fill: "#b30000" }}
+                  activeDot={{ stroke: "#8b0000" }}
+                />
+              </LineChart>
+              <Legend />
+              <Legend />
+            </ResponsiveContainer>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={2}>
+            <Button variant="primary" href="/">
+              Back to Admin
+            </Button>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
