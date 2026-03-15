@@ -17,6 +17,7 @@ import {
 
 import { Navbar, NavbarBrand } from "react-bootstrap";
 import "./myCss.css";
+import { Link } from "react-router-dom";
 
 // dane
 import users from "../../../Data/uzytkownicy.json";
@@ -108,6 +109,11 @@ function App() {
                       <td>{u.name}</td>
                       <td>{u.last_name}</td>
                       <td>{u.miejsce_zamieszkania}</td>
+                      <td>
+                        <Link to={"user-login-hours/" + u.id}>
+                          User Login Hours
+                        </Link>
+                      </td>
                     </tr>
                   );
                 })}
