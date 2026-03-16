@@ -15,12 +15,17 @@ import {
   Legend,
 } from "recharts";
 
+import { Navbar, NavbarBrand } from "react-bootstrap";
+import "./myCss.css";
+import { Link } from "react-router-dom";
+
 // dane
 import users from "../../../Data/uzytkownicy.json";
 import logs from "../../../Data/logowane.json";
 
 function App() {
   const [count, setCount] = useState(0);
+
   const GetData = () => {
     const dane = logs.map((d) => ({
       id: d.id,
@@ -33,19 +38,42 @@ function App() {
     //     ? { data: new Date(d.data).getDate() }
     //     : null;
     // });
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
     const suspicious = logs
       .filter((d) => d.lokalizacja == "Teheran")
-      .map((d) => ({ id: d.id, data: new Date(d.data).getDate() }));
+      .sort((a, b) => new Date(a.data) - new Date(b.data)) //sortowanie dat(bo json leci po id)
+      .map((d) => {
+        return {
+          id: d.id,
+          data: `${new Date(d.data).getDate()} ${monthNames[new Date(d.data).getMonth()]}`,
+        };
+      });
 
     const counts = suspicious.reduce((acc, item) => {
       acc[item.data] = (acc[item.data] || 0) + 1;
       return acc;
     }, {});
 
-    const result = Object.entries(counts).map(([data, count]) => ({
-      data: Number(data),
-      count,
-    }));
+    const result = Object.entries(counts).map(
+      ([data, num_of_suspicious_logs]) => ({
+        data: data,
+        num_of_suspicious_logs,
+      }),
+    );
 
     //return JSON.stringify(result);
     console.log(dane);
@@ -54,6 +82,10 @@ function App() {
 
   return (
     <>
+      <h1 style={{ textAlign: "center", margin: 20, marginBottom: 100 }}>
+        Admin Panel
+      </h1>
+
       <Container
         style={{ maxWidth: "100%" } /*Domyślnie bootstrap ustawia na 50% */}
       >
@@ -61,22 +93,34 @@ function App() {
           <Col sm={6}>
             <Table striped>
               <thead>
-                <tr>
+                <tr className="table-dark">
                   <th>id</th>
                   <th>imię</th>
                   <th>nazwisko</th>
                   <th>miejsce zamieszkania</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((u) => {
                   console.log(u.name);
                   return (
-                    <tr key={u.id}>
+                    <tr
+                      key={u.id}
+                      className={u.id == 1 ? "table-danger" : "table-success"}
+                    >
                       <td>{u.id}</td>
                       <td>{u.name}</td>
                       <td>{u.last_name}</td>
                       <td>{u.miejsce_zamieszkania}</td>
+                      <td>
+                        <Link
+                          to={"user-login-hours/" + u.id}
+                          style={{ textDecoration: "none", color: "black" }}
+                        >
+                          View Activity
+                        </Link>
+                      </td>
                     </tr>
                   );
                 })}
@@ -94,16 +138,28 @@ function App() {
                   stroke="#BFC9D1"
                   strokeDasharray="5 5"
                 />
-                <XAxis dataKey="data" stroke="#25343F" />
-                <YAxis stroke={"#25343F"} />
+                <XAxis dataKey="data" stroke="#F5F2F2" />
+                <YAxis stroke={"#F5F2F2"} />
+
+                <Tooltip
+                  cursor={{
+                    stroke: "#00ffff",
+                  }}
+                  contentStyle={{
+                    backgroundColor: "#37529c",
+                    borderColor: "#37529c",
+                  }}
+                />
+                <Legend />
                 <Line
                   type="monotone"
-                  dataKey="count"
+                  dataKey="num_of_suspicious_logs"
                   stroke={"#FF9B51"}
                   dot={{ fill: "#FF9B51" }}
                   activeDot={{ stroke: "#ff6f00" }}
                 />
               </LineChart>
+              <Legend />
               <Legend />
             </ResponsiveContainer>
           </Col>
