@@ -1,16 +1,32 @@
-[{"id": 0, 
- "name": "Jan", 
- "last_name": "Sobieski", 
- "miejsce_zamieszkania": "Warszawa"}, 
- {"id": 1, 
- "name": "Big", 
- "last_name": "Yahu", 
- "miejsce_zamieszkania": "Ganda"}, 
- {"id": 2, 
- "name": "Dante", 
- "last_name": "Aligerii", 
- "miejsce_zamieszkania": "Valona"}, 
- {"id": 3, 
- "name": "John", 
- "last_name": "Doe", 
- "miejsce_zamieszkania": "Waszyngton"}]
+[
+  {
+    "id": 0,
+    "name": "Jan",
+    "last_name": "Sobieski",
+    "miejsce_zamieszkania": "Warszawa"
+  },
+  {
+    "id": 1,
+    "name": "Big",
+    "last_name": "Yahu",
+    "miejsce_zamieszkania": "Ganda"
+  },
+  {
+    "id": 2,
+    "name": "Dante",
+    "last_name": "Aligerii",
+    "miejsce_zamieszkania": "Valona"
+  },
+  {
+    "id": 3,
+    "name": "John",
+    "last_name": "Doe",
+    "miejsce_zamieszkania": "Waszyngton"
+  },
+  {
+    "id": 4,
+    "name": "Stupin",
+    "last_name": "Digger",
+    "miejsce_zamieszkania": "Waszyngton"
+  }
+]
