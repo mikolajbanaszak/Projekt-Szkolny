@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import logs from "../../../Data/logowane.json";
 import users from "../../../Data/uzytkownicy.json";
 
+
 import {
   CartesianGrid,
   Line,
@@ -31,7 +32,7 @@ const GetData = (userId) => {
   }, {});
 
   const user_login_hours = Object.entries(activity).map((a) => {
-    return { hour: a[0], num_of_logs: a[1] };
+    return { hour: a[0], ilosc_logow: a[1] };
   });
 
   const json_result = JSON.stringify(user_login_hours);
@@ -82,7 +83,7 @@ function UserLoginHours() {
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="num_of_logs"
+                  dataKey="ilosc_logow"
                   stroke={"#b30000"}
                   dot={{ fill: "#b30000" }}
                   activeDot={{ stroke: "#8b0000" }}

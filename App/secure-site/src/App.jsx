@@ -20,10 +20,11 @@ import "./myCss.css";
 import { Link } from "react-router-dom";
 
 // dane
-import users from "../../../Data/uzytkownicy.json";
-import logs from "../../../Data/logowane.json";
+
+import {useUsers} from "./Json.jsx"
 
 function App() {
+  const  {users,logs } = useUsers();
   const [count, setCount] = useState(0);
 
   const GetData = () => {
