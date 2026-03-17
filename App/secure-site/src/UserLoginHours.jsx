@@ -13,7 +13,9 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import {Container, Row, Col, Button, Table} from "react-bootstrap";
+
+
 
 const GetData = (userId) => {
   const result = logs
@@ -49,6 +51,12 @@ const GetUserName = (userId) => {
 
 function UserLoginHours() {
   const { userId } = useParams();
+  const Wpisy = logs
+      .filter(l => l.id === Number(userId) && l.lokalizacja === "Teheran")
+      .map(l => ({
+        data: l.data,
+        lokalizacja: l.lokalizacja
+      }));
   return (
     <>
       <Container>
@@ -90,11 +98,31 @@ function UserLoginHours() {
                 />
               </LineChart>
               <Legend />
-              <Legend />
             </ResponsiveContainer>
           </Col>
         </Row>
-        <Row>
+        <Row style={{ marginTop: 100 }}>
+          <Col sm={8}>
+            <Table striped>
+              <thead>
+               <tr>
+                 <th>Data</th>
+                 <th>Lokalizacja</th>
+               </tr>
+              </thead>
+              <tbody>
+              {Wpisy.map((l,i) => {
+                return (
+                <tr key={i}>
+                  <td>
+                    {l.data}
+                  </td>
+                  <td>{l.lokalizacja}</td>
+                </tr>)
+              })}
+              </tbody>
+            </Table>
+          </Col>
           <Col sm={2}>
             <Button variant="primary" href="/">
               Back to Admin
