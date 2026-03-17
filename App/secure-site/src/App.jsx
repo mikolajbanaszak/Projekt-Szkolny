@@ -26,6 +26,17 @@ import {useUsers} from "./Json.jsx"
 function App() {
   const  {users,logs } = useUsers();
   const [count, setCount] = useState(0);
+  const suspicious_by_time = logs
+      .filter((d) => new Date(d.data).getHours() >= 18)
+      .map((d) =>{
+        const nazwa = users.find(l => l.id === d.id)
+        return{
+          imie: nazwa.name + " " + nazwa.last_name,
+          id: d.id,
+          data: d.data,
+          lokalizacja: d.lokalizacja,
+        }
+      });
 
   const GetData = () => {
     const dane = logs.map((d) => ({
@@ -58,9 +69,11 @@ function App() {
       .filter((d) => d.lokalizacja == "Teheran")
       .sort((a, b) => new Date(a.data) - new Date(b.data)) //sortowanie dat(bo json leci po id)
       .map((d) => {
+
         return {
           id: d.id,
           data: `${new Date(d.data).getDate()} ${monthNames[new Date(d.data).getMonth()]}`,
+
         };
       });
 
@@ -163,6 +176,32 @@ function App() {
               <Legend />
               <Legend />
             </ResponsiveContainer>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={6}>
+            <Table striped>
+              <thead>
+              <tr className="table-dark">
+                <th>nazwa</th>
+                <th>id</th>
+                <th>czas</th>
+                <th>lokalizacja</th>
+              </tr>
+              </thead>
+              <tbody>
+              {suspicious_by_time.map((d,i) => {
+                return (
+                    <tr key={i}>
+                      <td>{d.imie}</td>
+                      <td>{d.id}</td>
+                      <td>{d.data}</td>
+                      <td>{d.lokalizacja}</td>
+                    </tr>
+                )
+              })}
+              </tbody>
+            </Table>
           </Col>
         </Row>
       </Container>
