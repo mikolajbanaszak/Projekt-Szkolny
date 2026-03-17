@@ -3,7 +3,7 @@ import { useState } from "react";
 // react bootstrap
 import { Button, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Row, Col, Table } from "react-bootstrap";
+import { Container, Row, Col, Table, Dropdown } from "react-bootstrap";
 import {
   CartesianGrid,
   Line,
@@ -21,10 +21,10 @@ import { Link } from "react-router-dom";
 
 // dane
 
-import {useUsers} from "./Json.jsx"
+import { useUsers } from "./Json.jsx";
 
 function App() {
-  const  {users,logs } = useUsers();
+  const { users, logs } = useUsers();
   const [count, setCount] = useState(0);
   const suspicious_by_time = logs
       .filter((d) => new Date(d.data).getHours() >= 18 || d.lokalizacja === "Teheran")
@@ -128,12 +128,39 @@ function App() {
                       <td>{u.last_name}</td>
                       <td>{u.miejsce_zamieszkania}</td>
                       <td>
-                        <Link
-                          to={"user-login-hours/" + u.id}
-                          style={{ textDecoration: "none", color: "black" }}
-                        >
-                          View Activity
-                        </Link>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            variant="success"
+                            id="dropdown-basic"
+                          >
+                            View Activity
+                          </Dropdown.Toggle>
+
+                          <Dropdown.Menu>
+                            <Dropdown.Item>
+                              <Link
+                                to={"user-login-hours/" + u.id}
+                                style={{
+                                  textDecoration: "none",
+                                  color: "black",
+                                }}
+                              >
+                                Login Hours
+                              </Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item>
+                              <Link
+                                to={"user-login-locations/" + u.id}
+                                style={{
+                                  textDecoration: "none",
+                                  color: "black",
+                                }}
+                              >
+                                Login Locations
+                              </Link>
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
                       </td>
                     </tr>
                   );
