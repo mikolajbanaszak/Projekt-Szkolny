@@ -27,7 +27,7 @@ function App() {
   const  {users,logs } = useUsers();
   const [count, setCount] = useState(0);
   const suspicious_by_time = logs
-      .filter((d) => new Date(d.data).getHours() >= 18)
+      .filter((d) => new Date(d.data).getHours() >= 18 || d.lokalizacja === "Teheran")
       .map((d) =>{
         const nazwa = users.find(l => l.id === d.id)
         return{
@@ -179,9 +179,9 @@ function App() {
           </Col>
         </Row>
         <Row>
-          <Col sm={6}>
+          <Col sm={6} style={{ maxHeight: 300 , overflowX: "auto" }}>
             <Table striped>
-              <thead>
+              <thead style={{position: "sticky" , top: 0 , zIndex: 1 }}>
               <tr className="table-dark">
                 <th>nazwa</th>
                 <th>id</th>
